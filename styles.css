@@ -1,0 +1,255 @@
+body {
+    background-color: rgb(1, 22, 61);
+    height: 100%;
+    opacity: 1;
+    transition: opacity 2s;
+    transition-timing-function: ease-in-out;
+}
+
+#musicPage {
+    opacity: 0;
+}
+
+h1 {
+    text-align: center;
+    font-family: "Rockwell", sans-serif;
+    font-weight: normal;
+    font-size: 55px;
+    color: white;
+}
+
+h2 {
+    color: white;
+}
+
+h3 {
+    font-size: 15px;
+    color: white;
+}
+
+button {
+    background-color: transparent;
+    border: none;
+    padding: 10px;
+    color: lightgray;
+}
+
+button:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+table {
+    border-collapse:collapse;
+    border: none;
+}
+
+tr:hover {
+    background-color: rgb(32, 136, 41);
+}
+
+td:first-child,
+th:first-child {
+  border-radius: 12px 0 0 12px;
+}
+td:last-child,
+th:last-child {
+  border-radius: 0 12px 12px 0;
+}
+
+caption {
+    color: white;
+    font-size: 30px;
+}
+
+title {
+    font-size: 55px;
+    color: white;
+}
+
+ul li {
+  padding-bottom: 10px; /* Add padding below each list item */
+}
+
+ul li::after {
+  content: '';
+  display: block;
+  border-bottom: 1px solid rgb(80, 80, 80);
+  margin-top: 10px;
+}
+
+.libraryText {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  float: right;
+}
+
+.header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+}
+
+.header img {
+    margin: 0;
+    padding: 0;
+    margin-right: 10px;
+}
+
+.header h1 {
+    margin: 0;
+    margin-bottom: 50px;
+    padding: 0;
+    text-align: center;
+    justify-content: center;
+}
+
+.libraryBody {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    float: right;
+}
+
+.Lists {
+    display: flex;
+    padding-inline: 0;
+}
+
+.QueueTableOther {
+    padding: 0;
+    margin: 0;
+}
+
+.QueueTableNotOther {
+    padding: 0;
+    margin: 0;
+}
+
+.QueueTableRemoveButtons {
+    padding: 0;
+    margin: 0;
+}
+
+.mainStuff {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    float: left;
+}
+
+.stats {
+    padding-right: 50px;
+}
+
+.searchBox {
+    width: 550px;
+    background: rgb(100, 100, 100);
+    margin: 25px auto 0;
+    border-radius: 15px;
+}
+
+.row {
+    display: flex;
+    align-items: center;
+    padding: 5px 10px;
+    margin: 0;
+}
+.row.outline {
+    border-width: 1px;
+    border-color: white;
+    border-style: solid;
+    border-radius: 15px;
+}
+
+input {
+    flex: 1;
+    height: 25px;
+    background: transparent;
+    border: 0;
+    outline: 0;
+    font-size: 15px;
+    color: white;
+}
+
+.dropdown ul {
+    border-top: 1px solid black;
+    padding: 7px 5px;
+    margin-top: 0;
+    margin-bottom: 0;
+    color: lightgray;
+}
+.dropdown ul li {
+    list-style: none;
+    border-radius: 2px;
+    padding: 7px 5px;
+    cursor: pointer;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+.dropdown ul li:hover {
+    background: rgb(80, 80, 80);
+}
+.dropdown ul li::after {
+    border-bottom: none;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-bottom: 0;
+    padding-top: 0;
+}
+.dropdown {
+    max-height: 250px;
+    overflow-y: scroll;
+}
+
+html {
+    height: 100%;
+}
+
+#mainStartLinkContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+#mainStartLink {
+    color: rgb(30, 215, 96);
+    font-size: 75px;
+    transition: font-size 2s;
+}
+
+#mainStartLink:hover {
+    text-shadow: 0 0 25px rgba(30, 215, 96, 0.75);
+    font-size: 100px;
+}
+
+#playSearch {
+    color: lightgray;
+}
+
+#queueSearchNext {
+    color: lightgray;
+}
+
+#queueSearchLast {
+    color: lightgray;
+}
+
+::placeholder {
+    color: rgb(170, 170, 170);
+}
+
+#QueueTable {
+    list-style-type: none;
+}
+
+#QueueTableRemovers {
+    list-style-type: none;
+}
+
+#player {
+    float: left;
+}

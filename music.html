@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+  <link rel="stylesheet" href="styles.css">
+  <head>
+    <title>MUSIC</title>
+  </head>
+  <body id="musicPage">
+    <div class="header">
+        <a href="index.html">
+            <img src="./logo.png" width="200" height="155">
+        </a>
+        <h1>MUSIC SITE FOR PLAYING MUSIC</h1>
+    </div>
+    <div class="libraryText">
+      <div class="searchBox">
+        <div class="row">
+          <input type="text" id="inputBox" placeholder="Search for song" autocomplete="off"></input>
+          <button id="playSearch" onclick = "playSearched()">Play</button>
+          <button id="queueSearchNext" onclick = "queueSearchedNext()">Queue Next</button>
+          <button id="queueSearchLast" onclick = "queueSearchedLast()">Queue Back</button>
+        </div>
+        <div class="dropdown"></div>
+      </div>
+      <div class="stats">
+        <h2 style="font-size: 30px;" > Stats</h2>
+        <h3 id="LibrarySize"></h3>
+        <h3 id="QueSize"></h3>
+        <h3 id="RemainingSongs"></h3>
+        <h3 id="CurrentSong"></h3>
+        <h3 id="NextSongInQueue"></h3>
+      </div>
+      <div class="libraryBody">
+        <table id="songTable">
+            <caption>Library</caption>
+        </table>
+      </div>
+    </div>
+
+    <script src="./scripts.js"></script>
+    <div class="mainStuff">
+      <div id="player"></div>
+      <div>
+        <button onclick = "playAllSongs()"> Play Songs </button>
+        <button onclick = "previousSong()"> Previous Song </button>
+        <button onclick = "nextSong()"> Next Song </button>
+        <button onclick = "shuffleSongs()"> Shuffle </button>
+        <button id="loopButton" onclick = "infiniteLoopPress()"> Loop: off </button>
+        <button id="infiniteShuffleButton" onclick = "infiniteShufflePress()"> Shuffle Infinitely: off </button>
+        <button onclick = "clearQueue()"> Clear Queue </button>
+        <button onclick = "savePlaylist()"> Save Playlist </button>
+      </div>
+      <h2>Queued Songs</h2>
+      <div id="QueuedSongs" class="Lists">
+        <ul class="QueueTableOther" id="ImageTable"></ul>
+        <ul class = "QueueTableNotOther" id="QueueTable"></ul>
+        <ul class = "QueueTableRemoveButtons" id="QueueTableRemovers"></ul>
+      </div>
+      
+    </div>
+    
+    <script>
+      printString();
+    </script>
+    
+    <script>
+      // 2. This code loads the IFrame Player API code asynchronously.
+      var tag = document.createElement('script');
+
+      tag.src = "https://www.youtube.com/iframe_api";
+      var firstScriptTag = document.getElementsByTagName('script')[0];
+      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+    </script>
+    <script>
+        // Scroll to the top of the page when it loads
+        window.onload = function() {
+            window.scrollTo(0, 0);
+        };
+    </script>
+  </body>
+</html>
