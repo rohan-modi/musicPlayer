@@ -15,12 +15,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.post('/save-json', (req, res) => {
     const jsonData = JSON.stringify(req.body.data, null, 2);
     const newFileName = req.body.fileName;
+    const filePath = path.join(__dirname, 'public', newFileName);
 
-    fs.writeFile(newFileName, jsonData, (err) => {
+    console.log("Filepath:", filePath);
+
+    fs.writeFile(filePath, jsonData, (err) => {
         if (err) {
             return res.status(500).send('Error writing file');
         }
-
         res.send('JSON file has been created or updated successfully.');
     });
 });

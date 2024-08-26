@@ -96,13 +96,12 @@ function savePlaylist() {
     return fetch("./" + playlistName + ".json")
         .then(response => {
             if (response.ok) {
-                console.log("It exists");
-                saveQueue(true, playlistName);
-                return true;
+                confirmation = confirm("A playlist with that name already exists, would you like to overwrite it\'s contents?");
+                if (confirmation) {
+                    saveQueue(playlistName);
+                }
             } else {
-                console.log("It doth not exist");
-                saveQueue(true, playlistName);
-                return false;
+                saveQueue(playlistName);
             }
         });
 }
@@ -121,7 +120,7 @@ function convertPlaylistToJson() {
     return returnObject;
 }
 
-function saveQueue(newFile, fileName) {
+function saveQueue(fileName) {
     fetch('http://localhost:3000/save-json', {
         method: 'POST',
         headers: {
