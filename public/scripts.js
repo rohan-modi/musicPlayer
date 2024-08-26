@@ -107,6 +107,20 @@ function savePlaylist() {
         });
 }
 
+function convertPlaylistToJson() {
+    songArray = [];
+    for (let i = 0; i < queuedSongs.length; i++) {
+        songStuff = {
+            "title": queuedSongs[i].title,
+            "id": queuedSongs[i].ID,
+            "artist": queuedSongs[i].artist
+        };
+        songArray.push(songStuff);
+    }
+    returnObject = {songs: songArray};
+    return returnObject;
+}
+
 function saveQueue(newFile, fileName) {
     fetch('http://localhost:3000/save-json', {
         method: 'POST',
@@ -115,12 +129,7 @@ function saveQueue(newFile, fileName) {
         },
         body: JSON.stringify({
             fileName: fileName + ".json",
-            data: {
-                name: "Signmund",
-                modelType: "Neural Network",
-                frameworks: ["PyTorch", "TensorFlow", "Keras"],
-                architectures: ["ResNet", "MobileNet", "EfficientNet"]
-            }
+            data: convertPlaylistToJson()
         })
     })
     .then(response => response.text())
