@@ -1,0 +1,14 @@
+{
+  "name": "Signmund",
+  "modelType": "Neural Network",
+  "frameworks": [
+    "PyTorch",
+    "TensorFlow",
+    "Keras"
+  ],
+  "architectures": [
+    "ResNet",
+    "MobileNet",
+    "EfficientNet"
+  ]
+}
