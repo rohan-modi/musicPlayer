@@ -190,7 +190,6 @@ function copyPlaylistFile(fileName) {
     setTimeout(() => {
         playSelectedPlaylist();
     }, 100);
-    
 }
 
 function playSelectedPlaylist() {
@@ -220,6 +219,13 @@ function convertPlaylistToJson() {
     }
     returnObject = {songs: songArray};
     return returnObject;
+}
+
+function startSimulation() {
+    console.log("Function triggered");
+    fetch('http://localhost:3000/start-simulation', {
+        method: 'POST'
+    });
 }
 
 function saveQueue(fileName) {
@@ -382,6 +388,9 @@ function shuffleSongs() {
     playSong(queuedSongs[0]);
     updateQueueStat();
     printString();
+
+    getClipboard();
+
 }
 
 function addSongToQueue(song, extendList, next) {
@@ -864,3 +873,18 @@ function onPlayerStateChange() {
 function onYouTubeIframeAPIReady() {
     songPlayer = new YT.Player('player', {height: '390', width: '640', videoId: 'nNnBcCk7eDA', events: {'onStateChange': onPlayerStateChange}});
 }
+
+async function getClipboard() {
+    try {
+      // Ensure the clipboard API is available
+      if (navigator.clipboard) {
+        // Read text data from the clipboard
+        const text = await navigator.clipboard.readText();
+        console.log('Clipboard text:', text);
+      } else {
+        console.log('Clipboard API is not supported');
+      }
+    } catch (error) {
+      console.error('Failed to read clipboard contents:', error);
+    }
+  }
