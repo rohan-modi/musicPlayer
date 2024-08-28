@@ -253,3 +253,35 @@ html {
 #player {
     float: left;
 }
+
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+#dropdownInput {
+    width: 500px;
+    padding: 5px;
+    border: 0px solid #ccc;
+    cursor: pointer;
+}
+
+.dropdown-menu {
+    display: none;
+    border: 0px solid #ccc;
+    width: 500px;
+    z-index: 1000;
+}
+
+.dropdown-item {
+    padding: 5px;
+    cursor: pointer;
+    color: white;
+    border: 1px;
+    border-radius: 5px;
+}
+
+.dropdown-item:hover {
+    background-color: rgb(32, 136, 41);
+}

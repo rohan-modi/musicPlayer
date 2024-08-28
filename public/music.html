@@ -19,7 +19,7 @@
           <button id="queueSearchNext" onclick = "queueSearchedNext()">Queue Next</button>
           <button id="queueSearchLast" onclick = "queueSearchedLast()">Queue Back</button>
         </div>
-        <div class="dropdown"></div>
+        <div class="searchDropdown"></div>
       </div>
       <div class="stats">
         <h2 style="font-size: 30px;" > Stats</h2>
@@ -47,7 +47,11 @@
         <button id="loopButton" onclick = "infiniteLoopPress()"> Loop: off </button>
         <button id="infiniteShuffleButton" onclick = "infiniteShufflePress()"> Shuffle Infinitely: off </button>
         <button onclick = "clearQueue()"> Clear Queue </button>
-        <button onclick = "savePlaylist()"> Save Playlist </button>
+        <button onclick = "savePlaylist()"> Save </button>
+      </div>
+      <div class="dropdown">
+        <input type="text" id="dropdownInput" placeholder="Load playlist" readonly>
+        <div id="dropdownMenu" class="dropdown-menu"></div>
       </div>
       <h2>Queued Songs</h2>
       <div id="QueuedSongs" class="Lists">

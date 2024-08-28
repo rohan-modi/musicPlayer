@@ -9,6 +9,7 @@ var playingOutsideQueue = false;
 var tempSongIndex;
 var currentSong = 0;
 var selectingSong = false;
+var playlists;
 
 class Song {
     constructor(title, ID, artist) {
@@ -23,9 +24,10 @@ class Song {
 }
 
 let songsData;
+let songsLoaded = [];
 let songs = [];
 let songNames = [];
-const dropdown = document.querySelector(".dropdown");
+const dropdown = document.querySelector(".searchDropdown");
 const searchBar = document.getElementById("inputBox");
 
 searchBar.onkeyup = function() {
@@ -61,11 +63,11 @@ fetch('./songs.json')
     songsData = data;
     songsJSON = songsData.songs;
     numberOfSongs = songsJSON.length;
-    console.log("The number of songs is", numberOfSongs)
     for (let i = 0; i < numberOfSongs; i++) {
         tempSong = songsJSON[i];
         songObject = new Song(tempSong.title, tempSong.id, tempSong.artist);
         songs[i] = songObject;
+        songsLoaded[i] = songObject;
     }
     loadStuff()
   })
@@ -77,14 +79,8 @@ dropdown.addEventListener('mouseover', function() {
     selectingSong = true;
 });
 
-dropdown.addEventListener('mouseout', function() {
-    console.log("Went out");
-    selectingSong = false;
-});
-
 document.addEventListener('DOMContentLoaded', function(event) {
     event.preventDefault();
-    console.log("This happened");
     document.querySelector('body').style.opacity = 0;
     document.querySelector('body').style.opacity = 1;
 })
@@ -104,6 +100,112 @@ function savePlaylist() {
                 saveQueue(playlistName);
             }
         });
+}
+
+function loadPlaylist() {
+    fetch('http://localhost:3000/list-files')
+        .then(response => response.json())
+        .then(files => {
+            playlists = files;
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const dropdownInput = document.getElementById('dropdownInput');
+    const dropdownMenu = document.getElementById('dropdownMenu');
+
+    // Sample data for dropdown items
+    const items = [
+        { value: 'Option 1', label: 'Option 1' },
+        { value: 'Option 2', label: 'Option 2' },
+        { value: 'Option 3', label: 'Option 3' }
+    ];
+
+    var counter = 0;
+
+    // Function to generate dropdown items
+    function generateDropdownItems(items) {
+        dropdownMenu.innerHTML = ''; // Clear existing items
+        items.forEach(item => {
+            const div = document.createElement('div');
+            div.className = 'dropdown-item';
+            // div.textContent = playlists[counter];
+            div.textContent = item.label;
+            // div.setAttribute('data-value', playlists[counter]);
+            div.setAttribute('data-value', item.value);
+            dropdownMenu.appendChild(div);
+            counter++;
+        });
+    }
+
+    // Generate initial dropdown items
+    generateDropdownItems(items);
+
+    // Toggle dropdown menu visibility
+    dropdownInput.addEventListener('click', () => {
+        loadPlaylist();
+
+        newItems = [];
+        for (let i = 0; i < playlists.length; i++) {
+            var item = {value: playlists[i], label: playlists[i]};
+            newItems.push(item)
+        }
+        generateDropdownItems(newItems);
+
+        dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
+    });
+
+    // Handle item click
+    dropdownMenu.addEventListener('click', (event) => {
+        if (event.target.classList.contains('dropdown-item')) {
+            dropdownInput.value = event.target.getAttribute('data-value');
+            dropdownMenu.style.display = 'none';
+            console.log("Stuff was pressed", dropdownInput.value);
+            copyPlaylistFile(dropdownInput.value);
+        }
+    });
+});
+
+function copyPlaylistFile(fileName) {
+    songsLoaded.length = 0;
+    fetch('./playlists/' + fileName)
+        .then(response => response.json())
+        .then(data => {
+            songsData = data;
+            songsJSON = songsData.songs;
+            numberOfSongs = songsJSON.length;
+            for (let i = 0; i < numberOfSongs; i++) {
+                tempSong = songsJSON[i];
+                songObject = new Song(tempSong.title, tempSong.id, tempSong.artist);
+                songsLoaded[i] = songObject;
+            }
+        })
+        .catch(error => {
+            console.error('Error loading JSON:', error);
+        });
+    
+    setTimeout(() => {
+        playSelectedPlaylist();
+    }, 100);
+    
+}
+
+function playSelectedPlaylist() {
+    clearQueue();
+    songIndex = 0;
+    shuffled = false;
+    queuedSongs = [];
+    console.log(queuedSongs.length);
+    for (let i = 0; i < songsLoaded.length; i++) {
+        let newCopy = songsLoaded[i].copy();
+        queuedSongs.push(newCopy);
+    }
+    playSong(queuedSongs[0]);
+    updateQueueStat();
+    printString();
 }
 
 function convertPlaylistToJson() {
@@ -171,7 +273,6 @@ function displayDropdown(results) {
 }
 
 function selectInput(chosenSong) {
-    console.log("The inner stuff is:", chosenSong.innerHTML);
     searchBar.value = chosenSong.innerHTML;
     dropdown.innerHTML = '';
 }
@@ -265,7 +366,7 @@ function shuffleArray(array) {
 }
 
 function getRandomOrderNumbers() {
-    const numbers = Array.from({ length: songs.length }, (_, index) => index);
+    const numbers = Array.from({ length: songsLoaded.length }, (_, index) => index);
     return shuffleArray(numbers);
 }
 
@@ -275,7 +376,7 @@ function shuffleSongs() {
     shuffledSongs = getRandomOrderNumbers();
     queuedSongs.length = 0;
     for (let i = 0; i < shuffledSongs.length; i++) {
-        let newCopy = songs[shuffledSongs[i]].copy();
+        let newCopy = songsLoaded[shuffledSongs[i]].copy();
         queuedSongs.push(newCopy);
     }
     playSong(queuedSongs[0]);
@@ -336,10 +437,8 @@ function printString() {
     }
     var queueList = document.getElementById('QueueTable');
     var difference = queueList.getElementsByTagName("li").length - queuedSongs.length;
-    console.log("Difference:", difference, queueList.getElementsByTagName("li").length, queuedSongs.length);
     if (difference > 0) {
         for (let i = 0; i < difference; i++) {
-            console.log("Removed a song", difference, queueList.getElementsByTagName("li").length, queuedSongs.length);
             var column1 = document.getElementById('ImageTable');
             var column2 = document.getElementById('QueueTable');
             var column3 = document.getElementById('QueueTableRemovers');
@@ -377,12 +476,7 @@ function printString() {
     currentSongText.textContent = "Current Song: " + queuedSongs[songIndex].title + " - " + queuedSongs[songIndex].artist;
 }
 
-function removeSongFromQueue(event) {
-    const clickedButton = event.currentTarget;
-    const buttonID = clickedButton.id;
-    var buttonSubString = buttonID.substring(7);
-    var buttonIDNumber = parseInt(buttonSubString);
-
+function actuallyRemoveSong(buttonIDNumber) {
     var column1 = document.getElementById('ImageTable');
     var column2 = document.getElementById('QueueTable');
     var column3 = document.getElementById('QueueTableRemovers');
@@ -408,6 +502,14 @@ function removeSongFromQueue(event) {
     }
     updateQueueStat();
     printString();
+}
+
+function removeSongFromQueue(event) {
+    const clickedButton = event.currentTarget;
+    const buttonID = clickedButton.id;
+    var buttonSubString = buttonID.substring(7);
+    var buttonIDNumber = parseInt(buttonSubString);
+    actuallyRemoveSong(buttonIDNumber);
 }
 
 function fillQueueTable() {
